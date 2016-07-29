@@ -7,6 +7,8 @@ defmodule CloudVision.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     description: description(),
+     package: package(),
      deps: deps()]
   end
 
@@ -15,6 +17,21 @@ defmodule CloudVision.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [applications: [:logger, :goth, :httpoison]]
+  end
+
+  def description do
+    "Google Cloud Vision API Client in Elixir"
+  end
+
+  def package do
+    [
+      licenses: ["MIT License"],
+      maintainers: ["Yuya Yabe"],
+      links: %{
+        "Github" => "https://github.com/yuyabee/cloud_vision",
+        "Docs" => "https://hexdocs.pm/cloud_vision/"
+      }
+    ]
   end
 
   # Dependencies can be Hex packages:
