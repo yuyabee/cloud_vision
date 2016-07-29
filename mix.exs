@@ -46,7 +46,8 @@ defmodule CloudVision.Mixfile do
   defp deps do
     [
       {:httpoison, "~> 0.9.0"},
-      {:goth, github: "yuyabee/goth", branch: "update-httpoison"}
+      {:goth, github: "yuyabee/goth", branch: "update-httpoison"},
+      {:poison, "~> 2.0"}
     ]
   end
 end
