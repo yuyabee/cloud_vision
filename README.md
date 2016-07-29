@@ -4,8 +4,6 @@
 
 ## Installation
 
-If [available in Hex](https://hex.pm/packages/cloud_vision), the package can be installed as:
-
   1. Add `cloud_vision` to your list of dependencies in `mix.exs`:
 
     ```elixir
