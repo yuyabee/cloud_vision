@@ -1,13 +1,8 @@
 defmodule CloudVision do
-  def analyze(img_path) when is_bitstring(img_path) do
-    analyze(img_path, :local)
-  end
-
   def analyze(img_path, :local) do
     %{content: Base.encode64(File.read!(img_path))}
     |> analyze
   end
-
   def analyze(img_path, :storage) do
     %{source: %{
       gcsImageUri: "gs://" <> Application.get_env(:cloud_vision, :gcsUri) <> "/" <> img_path
@@ -15,6 +10,9 @@ defmodule CloudVision do
     |> analyze
   end
 
+  def analyze(img_path) when is_bitstring(img_path) do
+    analyze(img_path, :local)
+  end
   def analyze(img) do
     params =
       %{requests: [%{
