@@ -20,20 +20,28 @@
     end
     ```
 
-  3. Configure credentials for [goth](https://github.com/peburrows/goth) and your Google Cloud Storage Bucket URI:
+  3. Configure credentials for [goth](https://github.com/peburrows/goth):
 
     ```elixir
     config :goth, json: "PATH_TO_YOUR_CREDENTIALS" |> File.read!
-
-    # cloud_vision config
-    config :ex_cloud_vision, gcsUri: "YOUR_BUCKET_URI" # e.g. xxx.appspot.com
     ````
+
+  4. (Optional) Configure your Google Cloud Storage Bucket URI if you want to retrieve file from it:
+    ```elixir
+    config :ex_cloud_vision, gcsUri: "YOUR_BUCKET_URI" # e.g. xxx.appspot.com
+    ```
 
 ## Usage
 
-Just call ```CloudVision.analyze/1``` once everything configured properly.
+Just call ```CloudVision.analyze/1``` or ```CloudVision.analyze/2``` once everything configured properly.
 
 ```elixir
-# cat.jpg is a relative path to your bucket uri from its root. it must be uploaded beforehand
-CloudVision.analyze("cat.jpg")
+# analyze a local file
+CloudVision.analyze("/Users/yourname/Images/cat.jpg", :local)
+# or the shorthand version
+CloudVision.analyze("/Users/yourname/Images/cat.jpg")
+
+# or analyze an image stored in Google Cloud Storage
+# cat.jpg is a relative path from the storage's root
+CloudVision.analyze("cat.jpg", :storage)
 ```
