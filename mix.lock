@@ -1,5 +1,5 @@
 %{"certifi": {:hex, :certifi, "0.4.0", "a7966efb868b179023618d29a407548f70c52466bf1849b9e8ebd0e34b7ea11f", [:rebar3], []},
-  "goth": {:git, "https://github.com/yuyabee/goth.git", "de392b4de6fcbce3eb9eb1a1cf0a589a1249feac", [branch: "update-httpoison"]},
+  "goth": {:hex, :goth, "0.2.0", "c5b832b91fc514a99a582535d0e8dc900900578e467e813c639a45c6454e1c38", [:mix], [{:httpoison, "~> 0.9.0", [hex: :httpoison, optional: false]}, {:json_web_token, "~> 0.2.5", [hex: :json_web_token, optional: false]}, {:poison, "~> 2.1", [hex: :poison, optional: false]}]},
   "hackney": {:hex, :hackney, "1.6.1", "ddd22d42db2b50e6a155439c8811b8f6df61a4395de10509714ad2751c6da817", [:rebar3], [{:certifi, "0.4.0", [hex: :certifi, optional: false]}, {:idna, "1.2.0", [hex: :idna, optional: false]}, {:metrics, "1.0.1", [hex: :metrics, optional: false]}, {:mimerl, "1.0.2", [hex: :mimerl, optional: false]}, {:ssl_verify_fun, "1.1.0", [hex: :ssl_verify_fun, optional: false]}]},
   "httpoison": {:hex, :httpoison, "0.9.0", "68187a2daddfabbe7ca8f7d75ef227f89f0e1507f7eecb67e4536b3c516faddb", [:mix], [{:hackney, "~> 1.6.0", [hex: :hackney, optional: false]}]},
   "idna": {:hex, :idna, "1.2.0", "ac62ee99da068f43c50dc69acf700e03a62a348360126260e87f2b54eced86b2", [:rebar3], []},
