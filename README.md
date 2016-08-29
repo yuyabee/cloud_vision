@@ -46,7 +46,7 @@ CloudVision.analyze("/Users/yourname/Images/cat.jpg", features: [:image_properti
 CloudVision.analyze("cat.jpg", from: :storage, features: [:image_properties])
 ```
 
-### Available features(you can pass as many as you want(`features: [...]`)):
+### Available features (you can pass as many as you want(`features: [...]`)):
 ```elixir
 [:label, :logo, :text, :face, :landmark, :safe_search, :image_properties]
 # and the default

@@ -19,7 +19,13 @@ defmodule CloudVision do
     end
   end
 
-  defp build_params(img_path, opts), do:
+  @doc """
+  iex> CloudVision.build_params("cat.jpg", from: :storage, features: [:image_properties])
+  %{requests: [%{features: [%{type: "IMAGE_PROPERTIES"}],
+     image: %{source: %{gcsImageUri: "gs://dummy.appspot.com/cat.jpg"}}}]}
+  """
+
+  def build_params(img_path, opts), do:
     %{requests: [%{image: build_image(img_path, opts[:from]), features: build_features(opts[:features])}]}
 
   defp build_image(img_path, nil), do: build_image(img_path, :local)
