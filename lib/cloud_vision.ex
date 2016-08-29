@@ -5,24 +5,7 @@ defmodule CloudVision do
  ]
 
   def analyze(img_path, opts \\ []) do
-    img =
-      if Keyword.has_key?(opts, :from) && opts[:from] == :storage do
-        image(img_path, :storage)
-      else
-        image(img_path, :local)
-      end
-
-    features =
-      if Keyword.has_key?(opts, :features) && opts[:features] != [] do
-        opts[:features]
-        |> Enum.map(&(%{type: @features[&1]}))
-      else
-        [%{type: @features[:unspecified]}]
-      end
-
-    params = %{requests: [%{image: img, features: features}]}
-
-    case CloudVision.Client.post("/images:annotate", params |> Poison.encode!) do
+    case CloudVision.Client.post("/images:annotate", build_params(img_path, opts) |> Poison.encode!) do
       {:ok, %HTTPoison.Response{status_code: x, body: body}} when x in 200..299 ->
         decoded = Poison.decode!(body)
 
@@ -36,9 +19,17 @@ defmodule CloudVision do
     end
   end
 
-  defp image(img_path, :local), do: %{content: Base.encode64(File.read!(img_path))}
-  defp image(img_path, :storage), do:
+  defp build_params(img_path, opts), do:
+    %{requests: [%{image: build_image(img_path, opts[:from]), features: build_features(opts[:features])}]}
+
+  defp build_image(img_path, nil), do: build_image(img_path, :local)
+  defp build_image(img_path, :local), do: %{content: Base.encode64(File.read!(img_path))}
+  defp build_image(img_path, :storage), do:
     %{source: %{
       gcsImageUri: "gs://" <> Application.get_env(:cloud_vision, :gcsUri) <> "/" <> img_path
     }}
+
+  defp build_features(nil), do: build_features([])
+  defp build_features([]), do: [%{type: @features[:unspecified]}]
+  defp build_features(features), do: features |> Enum.map(&(%{type: @features[&1]}))
 end
