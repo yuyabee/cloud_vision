@@ -1,4 +1,6 @@
 defmodule CloudVision.Client do
+  @moduledoc false
+
   use HTTPoison.Base
   alias Goth.Token
 
