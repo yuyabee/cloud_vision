@@ -28,8 +28,16 @@ defmodule CloudVision do
          ]}]}
 
     case CloudVision.Client.post("/images:annotate", params |> Poison.encode!) do
-      {:ok, %HTTPoison.Response{body: res}} -> Poison.decode!(res)
-      {:error, _} -> "Something went wrong"
+      {:ok, %HTTPoison.Response{status_code: x, body: body}} when x in 200..299 ->
+        decoded = Poison.decode!(body)
+
+        # handling error here because somehow the api returns status code 200 even an error occurs
+        case decoded["responses"] |> Enum.find(fn (x) -> match? %{"error" => _}, x end) do
+          %{"error" => %{"message" => msg}} -> {:error, msg}
+          nil -> {:ok, decoded}
+        end
+      {:ok, %HTTPoison.Response{body: body}} -> {:error, Poison.decode!(body)}
+      {:error, _} -> {:error, "Something went wrong"}
     end
   end
 end
