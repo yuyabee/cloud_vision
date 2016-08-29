@@ -1,31 +1,26 @@
 defmodule CloudVision do
-  def analyze(img_path, :local) do
-    %{content: Base.encode64(File.read!(img_path))}
-    |> analyze
-  end
-  def analyze(img_path, :storage) do
-    %{source: %{
-      gcsImageUri: "gs://" <> Application.get_env(:cloud_vision, :gcsUri) <> "/" <> img_path
-    }}
-    |> analyze
-  end
+  @features [label: "LABEL_DETECTION", logo: "LOGO_DETECTION", text: "TEXT_DETECTION",
+   face: "FACE_DETECTION", landmark: "LANDMARK_DETECTION", safe_search: "SAFE_SEARCH_DETECTION",
+   image_properties: "IMAGE_PROPERTIES", unspecified: "TYPE_UNSPECIFIED"
+ ]
 
-  def analyze(img_path) when is_bitstring(img_path) do
-    analyze(img_path, :local)
-  end
-  def analyze(img) do
-    params =
-      %{requests: [%{
-         image: img,
-         features: [
-           %{
-             type: "LABEL_DETECTION"
-           }, %{
-             type: "LOGO_DETECTION"
-           }, %{
-             type: "TEXT_DETECTION"
-           }
-         ]}]}
+  def analyze(img_path, opts \\ []) do
+    img =
+      if Keyword.has_key?(opts, :from) && opts[:from] == :storage do
+        image(img_path, :storage)
+      else
+        image(img_path, :local)
+      end
+
+    features =
+      if Keyword.has_key?(opts, :features) && opts[:features] != [] do
+        opts[:features]
+        |> Enum.map(&(%{type: @features[&1]}))
+      else
+        [%{type: @features[:unspecified]}]
+      end
+
+    params = %{requests: [%{image: img, features: features}]}
 
     case CloudVision.Client.post("/images:annotate", params |> Poison.encode!) do
       {:ok, %HTTPoison.Response{status_code: x, body: body}} when x in 200..299 ->
@@ -40,4 +35,10 @@ defmodule CloudVision do
       {:error, _} -> {:error, "Something went wrong"}
     end
   end
+
+  defp image(img_path, :local), do: %{content: Base.encode64(File.read!(img_path))}
+  defp image(img_path, :storage), do:
+    %{source: %{
+      gcsImageUri: "gs://" <> Application.get_env(:cloud_vision, :gcsUri) <> "/" <> img_path
+    }}
 end
