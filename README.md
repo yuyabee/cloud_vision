@@ -8,7 +8,7 @@
 
     ```elixir
     def deps do
-      [{:cloud_vision, "~> 0.1.0"}]
+      [{:cloud_vision, "~> 1.0.0"}]
     end
     ```
 
