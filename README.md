@@ -33,15 +33,22 @@
 
 ## Usage
 
-Just call ```CloudVision.analyze/1``` or ```CloudVision.analyze/2``` once everything configured properly.
+Call `CloudVision.analyze/1` or `CloudVision.analyze/2` once everything is configured properly.
 
 ```elixir
 # analyze a local file
-CloudVision.analyze("/Users/yourname/Images/cat.jpg", :local)
+CloudVision.analyze("/Users/yourname/Images/cat.jpg", from: :local, features: [:image_properties])
 # or the shorthand version
-CloudVision.analyze("/Users/yourname/Images/cat.jpg")
+CloudVision.analyze("/Users/yourname/Images/cat.jpg", features: [:image_properties])
 
 # or analyze an image stored in Google Cloud Storage
 # cat.jpg is a relative path from the storage's root
-CloudVision.analyze("cat.jpg", :storage)
+CloudVision.analyze("cat.jpg", from: :storage, features: [:image_properties])
+```
+
+### Available features(you can pass as many as you want(`features: [...]`)):
+```elixir
+[:label, :logo, :text, :face, :landmark, :safe_search, :image_properties]
+# and the default
+:unspecified
 ```
