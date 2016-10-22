@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/yuyabee/cloud_vision.svg?branch=master)](https://travis-ci.org/yuyabee/cloud_vision)
 # CloudVision
 
 [Google Cloud Vision API](https://cloud.google.com/vision/) Client in Elixir.
